@@ -1,0 +1,41 @@
+#message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 350px;
+  min-width: 150px;
+  min-height: 60px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px #ccc;
+  // color: #fff;
+  padding: 8px;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition: .3s;
+  font-size: 14px;
+
+  p {
+    width: 100%;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  &.primary {
+    background-color: var(--primary);
+  }
+
+  &.warning {
+    background-color: var(--warn);
+  }
+
+  &.danger {
+    background-color: var(--danger);
+  }
+
+  &.success {
+    background-color: var(--success);
+  }
+}

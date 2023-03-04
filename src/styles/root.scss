@@ -1,0 +1,26 @@
+@import 'http://at.alicdn.com/t/c/font_3920351_fjxjwgcq4ya.css';
+
+body {
+  background-color: var(--background);
+  color: var(--color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+}
+
+body *:focus-visible {
+  box-shadow: 0 0 0 4px var(--primary);
+  outline: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#app {
+  height: 100vh;
+}

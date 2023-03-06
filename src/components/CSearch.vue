@@ -31,6 +31,7 @@ function changeHandle(e: Event) {
       <input
         class="input"
         type="text"
+        autocomplete="off"
         :value="modelValue"
         @input="inputHandle"
         @change="changeHandle"

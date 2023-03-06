@@ -47,3 +47,11 @@ export function restoreCache() {
   }
 
 }
+
+
+/**
+ * 保存播放器状态 在关闭网页时
+ */
+window.addEventListener("beforeunload", () => {
+  saveCache();
+});

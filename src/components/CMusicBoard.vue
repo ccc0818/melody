@@ -71,9 +71,10 @@ const albumEl = $ref<HTMLElement | null>(null);
 const songNameEl = $ref<HTMLElement | null>(null);
 let timerRoll: number = 0;
 function songNameRoll() {
-  if (!songNameEl) { 
-    songNameRoll()
-    return
+  clearInterval(timerRoll);
+  if (!songNameEl) {
+    songNameRoll();
+    return;
   }
 
   let left = 0;
@@ -136,7 +137,7 @@ function songNameRoll() {
     aspect-ratio: 1/1;
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid var(--color);
+    border: 3px solid #111;
     z-index: 99;
     flex: 0 0 auto;
   }
@@ -145,30 +146,34 @@ function songNameRoll() {
     height: 100%;
     transform: scale(1.2);
     pointer-events: none;
+    border-radius: 50%;
+    border: 13px solid #000;
   }
 
   .song {
     padding: 5px;
     height: 100%;
     display: flex;
-    width: clamp(200px, 100%, 400px);
+    width: 300px;
     flex-direction: column;
     background-color: var(--info-a50);
     border-radius: 8px;
     transition: 0.8s;
     transform-origin: left;
     padding-left: 30px;
-    margin-left: -20px;
     padding-right: 20px;
+    margin-left: -20px;
     position: relative;
+    overflow: hidden;
 
     &.hide {
-      transform: scaleX(0);
+      width: 0;
+      padding: 0;
     }
 
     .name {
       line-height: 25px;
-      font-size: 1.1em;
+      font-size: 1em;
       white-space: nowrap;
       overflow-x: auto;
       height: 25px;
@@ -193,7 +198,7 @@ function songNameRoll() {
     bottom: 5px;
     user-select: none;
     cursor: pointer;
-    transition: .1s;
+    transition: 0.1s;
 
     &:hover {
       transform: scale(1.2);

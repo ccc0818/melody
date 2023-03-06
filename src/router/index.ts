@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { isLogin } from "@/service";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     component: () => import("@/pages/Search.vue"),
   },
   {
+    name: "playlist",
+    path: "/playlist/:pid",
+    component: () => import("@/pages/PlayList.vue"),
+  },
+  {
     name: "login",
     path: "/login",
     component: () => import("@/pages/Login.vue"),
@@ -34,6 +40,21 @@ const routes = [
 const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach((to, from, next) => {
+  const login = isLogin();
+
+  if (to.name === "login" && login) {
+    return;
+  }
+
+  if (!login && to.meta.needLogin) {
+    // 未登录且路由需要登录权限
+    next({ name: "login", query: { from: from.name as string } });
+  } else {
+    next();
+  }
 });
 
 export default router;

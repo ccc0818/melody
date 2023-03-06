@@ -4,10 +4,11 @@ interface IMessageOption {
   type?: "primary" | "warning" | "danger" | "success";
   message: string;
   duration?: number;
+  cb?: () => void
 }
 
 export function showMessage(
-  { type = "primary", message = "", duration = 1000 }: IMessageOption,
+  { type = "primary", message = "", duration = 1000, cb }: IMessageOption,
   dom?: HTMLElement
 ) {
   if (dom === undefined) {
@@ -35,6 +36,8 @@ export function showMessage(
       msgDom.style.transform = "translate(-50%, -50%) translateY(-80px)";
       msgDom.style.opacity = "0";
       msgDom.ontransitionend = () => msgDom.remove();
+
+      cb && cb()
     }, duration);
   }
 }

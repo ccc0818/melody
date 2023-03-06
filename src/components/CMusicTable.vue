@@ -129,7 +129,7 @@ function loadMoreHandle() {
 
   .load-more {
     padding: 15px 30px;
-    background-color: var(--primary);
+    background-color: var(--info-a50);
     width: fit-content;
     border-radius: 8px;
     margin: 10px auto;
@@ -137,7 +137,7 @@ function loadMoreHandle() {
     cursor: pointer;
 
     &:hover {
-      background-color: var(--primary-120);
+      background-color: var(--primary);
     }
   }
 }

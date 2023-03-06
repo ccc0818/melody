@@ -76,7 +76,7 @@ watch(() => props.muted, n => {
         :min="0"
         :max="1"
         v-model="volumeRef"
-        @change="v => emits('volumeChange', v)"
+        @drag="v => emits('volumeChange', v)"
       />
     </div>
   </div>

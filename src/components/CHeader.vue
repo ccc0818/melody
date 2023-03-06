@@ -69,11 +69,10 @@ let lyricShowRef = $ref<boolean>(false);
 </script>
 
 <template>
-  <div class="header-container">
+  <div class="header-container" @click="lyricShowRef = !lyricShowRef">
     <!-- 展示区 显示歌词入口 -->
     <div class="music">
       <CMusicBoard
-        @click="lyricShowRef = !lyricShowRef"
         :music-name="musicDetail.musicName"
         :singer="singerRef"
         :pic="musicDetail.picUrl"
@@ -86,7 +85,7 @@ let lyricShowRef = $ref<boolean>(false);
     </div>
 
     <!-- 控制器 -->
-    <div class="controler">
+    <div class="controler" @click.stop="">
       <Controler
         :play="play"
         :playmode="playmode"
@@ -100,7 +99,7 @@ let lyricShowRef = $ref<boolean>(false);
     </div>
 
     <!-- 搜索框 -->
-    <div class="search">
+    <div class="search" @click.stop="">
       <CSearch v-model="searchTextRef" @change="searchChangeHandle" />
     </div>
 

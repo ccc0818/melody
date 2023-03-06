@@ -54,8 +54,8 @@ const useMusicStore = defineStore("music", () => {
     const music = (await getSongV1(id)) as any;
     const detail = (await getMusicDetail([id])) as any;
     const lyric = await getLyric(id) as any;
-    const song = detail.songs[0]
-
+    const song = detail.songs[0];
+    
     const musicDetail = {
       id,
       musicName: song.name,

@@ -51,7 +51,11 @@ async function searchHandle(more: boolean = false) {
   try {
     const res = await search(route.params.s as string, offsetRef);
     songCount = res.songCount;
-    
+
+    if (songCount === 0) { 
+      return
+    }
+
     if (more) {
       songsListRef.push(...res.songs);
     } else {

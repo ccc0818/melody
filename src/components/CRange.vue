@@ -26,6 +26,7 @@ const props = defineProps({
 const emits = defineEmits<{
   (e: 'update:modelValue', value: number): void
   (e: 'change', value: number): void
+  (e: 'drag', value: number): void
 }>()
 
 let innerValue = $ref<number>(props.modelValue)
@@ -92,6 +93,7 @@ function dragHandle(e: MouseEvent) {
 
   const newPercent = newOffset / trackWidth;
   value = newPercent * (props.max - props.min);
+  emits('drag', value);
 }
 
 function mousedownHandle(e: MouseEvent) {
@@ -117,7 +119,7 @@ function clickTrackHandle(e: MouseEvent) {
 </script>
 
 <template>
-  <div class="range">
+  <div class="range" @click.stop>
     <div ref="trackEl" class="track" :style="`--stroke: ${stroke}px`" @click="clickTrackHandle">
       <div ref="useTrackEl" class="use"></div>
       <div ref="thumbEl" class="thumb" @click.stop @mousedown.stop="mousedownHandle"></div>

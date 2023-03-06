@@ -42,18 +42,14 @@ let autoScroll = true;
 let ulHeight = 0;
 let maxOffset = 0;
 
-onMounted(() => {
-  let timer = setInterval(() => {
-    if (lyricEl && ulEl) {
-      ulHeight = lyricEl.clientHeight;
-      maxOffset = ulEl.clientHeight - ulHeight;
-    }
-
-    if (ulHeight > 0) {
-      clearInterval(timer);
-    }
-  }, 100);
-});
+watch(() => props.show, n => {
+  if (n) { 
+    nextTick(() => { 
+      ulHeight = lyricEl!.clientHeight;
+      maxOffset = ulEl!.clientHeight - ulHeight;
+    }) 
+  }
+})
 
 const lrcListRef = computed<ILyric[]>(() => {
   return parseLyric(props.lyric).filter(v => v.words);
@@ -165,7 +161,7 @@ function lyricScrollIng() {
   width: 100%;
   height: 100%;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   overflow: hidden;
   transition: 0.3s;
@@ -271,6 +267,6 @@ function lyricScrollIng() {
 
 .lyric-enter-from,
 .lyric-leave-to {
-  transform: translateY(100%);
+  transform: translateY(-100%);
 }
 </style>

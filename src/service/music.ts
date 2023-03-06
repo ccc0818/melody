@@ -40,3 +40,33 @@ export function getLyric(id: number) {
 export function getMusicDetail(ids: number[]) { 
   return axios.get(`/song/detail?ids=${ids}`);
 }
+
+/**
+ * 获取用户喜欢列表
+ * @param uid 
+ * @returns 
+ */
+export function getMusicsOfLike(uid: number) { 
+  return axios.get(`/likelist?uid=${uid}`);
+}
+
+/**
+ * 设置喜欢 
+ * @param id 
+ * @param like 
+ * @returns  成功code 为200 否则就是失败 
+ */
+export function setLike(id: number, like: boolean = true) { 
+  return axios.get(`like?id=${id}&like=${like}`)
+}
+
+/**
+ * 获取用户歌单
+ * @param uid 
+ * @param offset 
+ * @param limit 
+ * @returns 
+ */
+export function getUserPlaylist(uid: number, offset: number = 0, limit: number = 30) { 
+  return axios.get(`/user/playlist?uid=${uid}&offset=${offset}&limit=${limit}`);
+}

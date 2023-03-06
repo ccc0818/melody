@@ -6,3 +6,9 @@ export enum SongLevel {
   hires = "hires", // Hi-Res
 }
 
+export enum CodeState { 
+  expire = 800,
+  wait = 801,
+  waitack = 802,
+  access = 803
+}

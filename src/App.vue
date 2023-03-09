@@ -33,29 +33,30 @@ const user = computed<{ avatar: string; nickname: string }>(() => {
   };
 });
 
-// onBeforeMount(async () => {
-//   const res = await getLoginState();
-//   if (res.data.code === 200 && res.data.profile) {
-//     // 已登录
-//     markLogin() // 标记已经登录
+onBeforeMount(async () => {
+  const res = await getLoginState();
+  
+  if (res.data.code === 200 && res.data.profile) {
+    // 已登录
+    markLogin() // 标记已经登录
 
-//     setUserState({
-//       login: true,
-//       // uid: res.data.profile.userId,
-//     });
+    setUserState({
+      login: true,
+      // uid: res.data.profile.userId,
+    });
 
-//     setUserDetail({
-//       avatar: res.data.profile.avatarUrl,
-//       nickname: res.data.profile.nickname,
-//     });
-//   } else {
-//     delLoginMark(); // 删除登录标记
-//     loginAsGuest(); // 默认以访客登录
-//     setUserDetail({
-//       nickname: "游客模式",
-//     });
-//   }
-// });
+    setUserDetail({
+      avatar: res.data.profile.avatarUrl,
+      nickname: res.data.profile.nickname,
+    });
+  } else {
+    delLoginMark(); // 删除登录标记
+    loginAsGuest(); // 默认以访客登录
+    setUserDetail({
+      nickname: "游客模式",
+    });
+  }
+});
 
 function loginHandle() {
   if (!userState.value.login) {
@@ -65,6 +66,8 @@ function loginHandle() {
 
 async function logoutHandle() {
   const res = await loginOut(); // 请求注销
+  console.log(res);
+  delLoginMark()
   location.href = location.origin; // 重新加载网页
 }
 </script>

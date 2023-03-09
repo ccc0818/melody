@@ -68,5 +68,23 @@ export function setLike(id: number, like: boolean = true) {
  * @returns 
  */
 export function getUserPlaylist(uid: number, offset: number = 0, limit: number = 30) { 
-  return axios.get(`/user/playlist?uid=${uid}&offset=${offset}&limit=${limit}`);
+  return axios.get(`/user/playlist?uid=${uid}&offset=${offset}&limit=${limit}`) as any;
+}
+
+/**
+ * 获取歌单详情
+ * @param pid 
+ * @returns 
+ */
+export function getPlaylistDetail(pid: number) { 
+  return axios.get(`/playlist/detail?id=${pid}`) as any;
+}
+
+/**
+ * 获取歌单内所有的歌曲
+ * @param pid 
+ * @returns 
+ */
+export function getPlaylistMusics(pid: number) { 
+  return axios.get(`/playlist/track/all?id=${pid}`) as any;
 }

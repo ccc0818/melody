@@ -114,11 +114,11 @@ function songNameRoll() {
       <p class="time">
         {{ timeRef }}
       </p>
-      <span
+      <!-- <span
         class="iconfont icon-like"
         :class="like ? 'icon-xihuan like' : 'icon-xihuan1'"
         @click.stop="emits('likeChange', !like)"
-      ></span>
+      ></span> -->
     </div>
   </div>
 </template>

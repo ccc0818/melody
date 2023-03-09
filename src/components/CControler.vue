@@ -8,12 +8,14 @@ const props = withDefaults(
     play: boolean;
     volume: number;
     muted: boolean;
+    showPlayList: boolean
   }>(),
   {
     playmode: PlayMode.random,
     play: false,
     volume: 0.3,
     muted: false,
+    showPlayList: false
   }
 );
 
@@ -22,6 +24,9 @@ const emits = defineEmits<{
   (e: "play", state: boolean): void;
   (e: "volumeChange", volume: number): void;
   (e: "muteChange", state: boolean): void;
+  (e: "onPre"): void;
+  (e: "onNext"): void;
+  (e: 'onplaylist'): void;
 }>();
 
 const modeIconRef = computed(() => {
@@ -59,13 +64,13 @@ watch(() => props.muted, n => {
       :class="modeIconRef"
       @click="emits('modeChange')"
     ></span>
-    <span class="iconfont icon-shangyishou" />
+    <span class="iconfont icon-shangyishou" @click="emits('onPre')" />
     <span
       class="iconfont play"
       :class="!play ? 'icon-24gf-play' : 'icon-zanting'"
       @click="emits('play', !play)"
     />
-    <span class="iconfont icon-xiayishou" />
+    <span class="iconfont icon-xiayishou" @click="emits('onNext')" />
     <div class="volume">
       <span
         class="iconfont"
@@ -79,6 +84,7 @@ watch(() => props.muted, n => {
         @drag="v => emits('volumeChange', v)"
       />
     </div>
+    <span class="iconfont icon-liebiao" :class="showPlayList ? 'open' : ''" @click.stop="emits('onplaylist')"></span>
   </div>
 </template>
 
@@ -99,14 +105,19 @@ watch(() => props.muted, n => {
     text-align: center;
 
     &:hover {
-      background-color: var(--info);
+      color: #fff;
+      background-color: var(--primary);
     }
 
     &.play {
       font-size: 1.8em;
       padding: 10px;
       border-radius: 50%;
-      // background-color: ;
+    }
+
+    &.open {
+      color: #fff;
+      background-color: var(--primary);
     }
   }
 

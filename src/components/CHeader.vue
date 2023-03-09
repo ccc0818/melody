@@ -9,6 +9,7 @@ import player from "@/utils/player";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { PlayMode } from "@/store/player";
+import CPlayList from "./CPlayList.vue";
 
 const router = useRouter();
 const { musicStore, playerStore } = useStore();
@@ -17,7 +18,7 @@ const { playerState } = storeToRefs(playerStore);
 /**
  * 音乐信息面板
  */
-const { musicDetail } = toRefs(musicStore.musicState);
+const { musicDetail, playList, index } = toRefs(musicStore.musicState);
 const singerRef = computed(() => {
   return musicDetail.value.singers.join("&");
 });
@@ -66,6 +67,27 @@ function searchChangeHandle(v: string) {
  * 歌词面板
  */
 let lyricShowRef = $ref<boolean>(false);
+
+/**
+ * 播放列表
+ */
+let playlistShowRef = $ref<boolean>(false);
+document.addEventListener("click", () => {
+  if (playlistShowRef) {
+    playlistShowRef = false;
+  }
+});
+
+// 从播放列表删除
+const { delFromPlayList } = musicStore;
+function ondelHandle(i: number) {
+  delFromPlayList(i);
+}
+
+// 播放
+function onplayHandle(i: number) {
+  player.play(playList.value[i].id, i);
+}
 </script>
 
 <template>
@@ -91,17 +113,37 @@ let lyricShowRef = $ref<boolean>(false);
         :playmode="playmode"
         :volume="volume"
         :muted="muted"
+        :show-play-list="playlistShowRef"
         @mode-change="() => playerStore.switchPlayMode()"
         @mute-change="s => (player.muted = s)"
         @play="s => (s ? player.play() : player.pause())"
         @volume-change="v => (player.volume = v)"
+        @on-next="player.switchPlay()"
+        @on-pre="player.switchPlay(false)"
+        @onplaylist="playlistShowRef = !playlistShowRef"
       />
     </div>
 
     <!-- 搜索框 -->
     <div class="search" @click.stop="">
-      <CSearch v-model="searchTextRef" @change="searchChangeHandle" />
+      <CSearch
+        style="height: 100%"
+        v-model="searchTextRef"
+        @change="searchChangeHandle"
+        placeholder=""
+      />
     </div>
+
+    <!-- 播放列表 -->
+    <Teleport to="body">
+      <CPlayList
+        :show="playlistShowRef"
+        :playlist="playList"
+        :playindex="index"
+        @ondel="ondelHandle"
+        @onplay="onplayHandle"
+      />
+    </Teleport>
 
     <!-- 进度条 -->
     <Range
@@ -142,6 +184,8 @@ let lyricShowRef = $ref<boolean>(false);
   // overflow: hidden;
   // font-size: 1em;
   backdrop-filter: blur(20px);
+  align-items: center;
+  justify-items: center;
   z-index: 99;
 
   .controler {
@@ -162,7 +206,7 @@ let lyricShowRef = $ref<boolean>(false);
   .search {
     grid-area: search;
     // width: 400px;
-    height: 100%;
+    height: 70%;
   }
 
   .progress {

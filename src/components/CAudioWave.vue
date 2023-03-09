@@ -81,7 +81,8 @@ function draw() {
   if (needdraw) {
     // 减少渲染
     setTimeout(() => { 
-      requestAnimationFrame(draw);
+      // requestAnimationFrame(draw);
+      draw();
     }, frameDelay);
   }
 }

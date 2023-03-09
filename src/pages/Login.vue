@@ -3,20 +3,23 @@ import QrcodeVue from "qrcode.vue";
 import {
   CodeState,
   getKey,
+  getLoginState,
   getQrCode,
   getQrState,
-  markLogin
+  markLogin,
 } from "@/service";
 import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
+import useStore from "@/store";
 
+const { userStore } = useStore();
+const { setUserDetail, setUserState } = userStore;
 const route = useRoute();
 const router = useRouter();
 let key: string;
 let qrUrlRef = $ref<string>("");
 let codeStateRef = $ref<CodeState>(CodeState.wait);
 
-
-onBeforeMount(async () => { 
+onBeforeMount(async () => {
   // 初始化二维码
   const resKey = await getKey();
   key = resKey.data.unikey;
@@ -26,7 +29,7 @@ onBeforeMount(async () => {
     qrUrlRef = resCode.data.qrurl;
     loopCheck(key);
   }
-}) 
+});
 
 // 轮训检查二维码状态
 let timer: number = 0;
@@ -46,21 +49,37 @@ function loopCheck(key: string) {
       console.log(res);
       clearInterval(timer);
       codeStateRef = CodeState.access;
-      markLogin(); // 标记已经登录
-      router.push({ name: route.query.from as string });
+
+      // 获取登录状态
+      const login = await getLoginState();
+      if (login.data.code === 200 && login.data.profile) {
+        // 已登录
+        markLogin(); // 标记已经登录
+
+        setUserState({
+          login: true,
+          uid: login.data.profile.userId,
+        });
+
+        setUserDetail({
+          avatar: login.data.profile.avatarUrl,
+          nickname: login.data.profile.nickname,
+        });
+
+        router.back();
+      }
     }
   }, 2000);
 }
 
-onBeforeRouteLeave(() => { 
+onBeforeRouteLeave(() => {
   // 离开时清除轮询
   clearInterval(timer);
-})
+});
 
 // 刷新二维码
 async function refreshCodeHandle() {
-  if (codeStateRef !== CodeState.expire)
-    return;
+  if (codeStateRef !== CodeState.expire) return;
 
   const resCode = await getQrCode(key);
   qrUrlRef = resCode.data.qrurl;
@@ -72,6 +91,8 @@ async function refreshCodeHandle() {
 <template>
   <div class="login-container" v-if="qrUrlRef">
     <div class="qr-container">
+      <h1 class="title">请使用网易云音乐APP扫码授权登录</h1>
+
       <!-- 二维码登录 -->
       <div class="qr-code">
         <QrcodeVue
@@ -116,10 +137,17 @@ async function refreshCodeHandle() {
   position: relative;
 
   .qr-container {
+    width: 256px;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .title {
+      margin: 15px 0;
+      font-size: 1.3em;
+      text-align: center;
+    }
 
     .qr-code {
       aspect-ratio: 1/1;

@@ -51,7 +51,7 @@ export function loginAsGuest() {
  * 获取登录状态
  * @returns
  */
-export function getLoginState(cookie: string = "") {
+export function getLoginState(cookie?: string) {
   return axios.post(`/login/status?timeStamp=${Date.now()}`, {
     cookie,
   }) as any; 

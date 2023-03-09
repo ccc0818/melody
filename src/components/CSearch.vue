@@ -2,9 +2,11 @@
 const props = withDefaults(
   defineProps<{
     modelValue: string;
+    placeholder: string;
   }>(),
   {
     modelValue: "",
+    placeholder: ''
   }
 );
 
@@ -32,6 +34,7 @@ function changeHandle(e: Event) {
         class="input"
         type="text"
         autocomplete="off"
+        :placeholder="placeholder"
         :value="modelValue"
         @input="inputHandle"
         @change="changeHandle"
@@ -45,11 +48,10 @@ function changeHandle(e: Event) {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 
   .input-container {
     width: 300px;
-    height: 50px;
+    height: 100%;
     display: flex;
     align-items: center;
     padding: 5px 10px;

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { IMusicDetail } from '@/store/music';
 import { debounce } from '@/utils'
+import AlbumImg from '@/assets/images/album-default.jpg';
+import vLazyContainer from '@/direactives/vLazyContainer'
 
 const props = withDefaults(defineProps<{
   songsList: Partial<IMusicDetail>[]
@@ -22,12 +24,12 @@ function loadMoreHandle() {
 </script>
 
 <template>
-  <div class="music-table">
+  <div class="music-table" v-lazy-container="{selector: 'img'}">
     <ul class="ul">
       <!-- 左侧 -->
       <li class="item" v-for="v in songsList" :key="v.id" @dblclick="emits('dbclick', v.id as number)">
         <div class="left">
-          <img class="al" :src="v.picUrl">
+          <img class="al" :data-src="v.picUrl" :src="AlbumImg">
           <div class="info">
             <p class="name">{{ v.musicName }}</p>
             <p class="singer">{{ v.singers!.join('&') }}</p>
@@ -52,14 +54,17 @@ function loadMoreHandle() {
 <style scoped lang="scss">
 .music-table {
   width: 100%;
+  height: 100%;
   padding: 20px 10px;
+  overflow: auto;
+  position: relative;
 
   .item {
     width: 100%;
     // height: 80px;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 2fr 1fr 1fr;
     // grid-template-rows: 60px;
     cursor: pointer;
     user-select: none;

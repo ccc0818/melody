@@ -221,7 +221,7 @@ function lyricScrollIng() {
             padding: 5px 20px;
             line-height: 1.5em;
             transition: 0.3s;
-            color: #ffffff77;
+            color: var(--color-a50);
 
             &:hover {
               background-color: var(--info-a50);
@@ -231,7 +231,7 @@ function lyricScrollIng() {
           }
 
           li.active {
-            color: #fff;
+            color: var(--color);
           }
         }
       }

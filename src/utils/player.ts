@@ -1,4 +1,5 @@
 import useStore from "@/store";
+import useMusicStore, { IMusicDetail } from "@/store/music";
 
 /**
  * 播放器类
@@ -15,10 +16,10 @@ class Player {
   private _audio: HTMLAudioElement = new Audio();
   private _analyzer?: AnalyserNode;
 
-  private constructor() { 
-    window.addEventListener('beforeunload', () => { 
-      this.pause()
-    })
+  private constructor() {
+    window.addEventListener("beforeunload", () => {
+      this.pause();
+    });
   }
 
   get audio() {
@@ -30,10 +31,10 @@ class Player {
       volume = 1;
     } else if (volume < 0) {
       volume = 0;
-    } 
+    }
 
-    if (this._audio.muted) { 
-      this.muted = false
+    if (this._audio.muted) {
+      this.muted = false;
     }
 
     this._audio.volume = volume;
@@ -42,9 +43,9 @@ class Player {
   set muted(muted: boolean) {
     this._audio.muted = muted;
 
-    const { playerStore } = useStore() 
-    const { setPlayerState } = playerStore
-      setPlayerState({
+    const { playerStore } = useStore();
+    const { setPlayerState } = playerStore;
+    setPlayerState({
       muted: muted,
     });
   }
@@ -53,12 +54,26 @@ class Player {
     return this._analyzer;
   }
 
-  async play(id?: number) {
-    const { musicStore } = useStore();
-    const { setMusicId } = musicStore;
+  async play(id?: number, index?: number) {
     if (id !== undefined) {
+      const { musicStore } = useStore();
+      const { setMusicId, addToPlayList, setIndex, musicState } = musicStore;
       const res = await setMusicId(id);
       if (res) {
+        if (index !== undefined) {
+          // 无需添加到播放列表 本身就在列表中
+          setIndex(index);
+        } else { 
+          // 需要添加到播放列表 未传入index
+          const fidx = musicState.playList.findIndex((v: any) => v.id === id);
+          if (fidx < 0) {
+            const length = addToPlayList([res]);
+            setIndex(length - 1);
+          } else { 
+            setIndex(fidx);
+          }
+        }
+
         this._audio.src = res.url;
         this._audio.crossOrigin = "anonymous"; // 开启跨域
         this._audio.play();
@@ -66,6 +81,31 @@ class Player {
     } else {
       this._audio.play();
     }
+  }
+
+  async playAll(musics: Partial<IMusicDetail>[]) {
+    const { musicStore } = useStore();
+    const { clearPlayList, setIndex, setMusicId, setPlayList } =
+      musicStore;
+    // 将歌单歌曲替换到播放列表
+    clearPlayList();
+    setPlayList(musics);
+    setIndex(0);
+    const res = await setMusicId(musics[0].id as number);
+    if (res) {
+      this._audio.src = res.url;
+      this._audio.crossOrigin = "anonymous"; // 开启跨域
+      this._audio.play();
+    }
+  }
+
+  switchPlay(next: boolean = true) {
+    const musicStore = useMusicStore();
+    const { switchMusic } = musicStore;
+    switchMusic(next).then(res => {
+      this._audio.src = res.url;
+      this.play();
+    });
   }
 
   pause() {

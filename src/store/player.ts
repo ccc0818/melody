@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia'
-import player from '@/utils/player'
+import { defineStore } from "pinia";
+import player from "@/utils/player";
+import useMusicStore from "./music";
 
 export enum PlayMode {
   singleCircle = 0,
@@ -7,18 +8,17 @@ export enum PlayMode {
   random,
 }
 
-interface IPlayerState { 
-  volume: number
-  play: boolean
-  muted: boolean
-  playmode: PlayMode
+interface IPlayerState {
+  volume: number;
+  play: boolean;
+  muted: boolean;
+  playmode: PlayMode;
 }
-
 
 /**
  * 播放器状态管理库
  */
-const usePlayerStore = defineStore('player', () => {
+const usePlayerStore = defineStore("player", () => {
   const playerState = ref<IPlayerState>({
     volume: 0,
     play: false,
@@ -27,14 +27,24 @@ const usePlayerStore = defineStore('player', () => {
   });
 
   function initPlayerStore() {
-
-
     // 初始化属性
     setPlayerState({
       volume: player.audio.volume,
       muted: player.audio.muted,
       play: !player.audio.paused,
     });
+
+    // 注册空格按键
+    document.addEventListener('keyup', (e: KeyboardEvent) => { 
+      if (e.key === " ") { 
+        // 按下了空格键
+        if (playerState.value.play) {
+          player.pause();
+        } else {
+          player.play();
+        } 
+      }
+    })
 
     // 注册播放事件
     player.audio.addEventListener("playing", () => {
@@ -64,28 +74,35 @@ const usePlayerStore = defineStore('player', () => {
       // 歌曲结束时跟据播放模式状态判断如何播放
       if (playerState.value.playmode === PlayMode.singleCircle) {
         player.play();
+      } else {
+        const musicStore = useMusicStore();
+        const { switchMusic } = musicStore;
+        switchMusic().then(res => {
+          player.audio.src = res.url;
+          player.play();
+        });
       }
     });
   }
 
   /**
    * 设置播放器状态
-   * @param state 
+   * @param state
    */
-  function setPlayerState(state: Partial<IPlayerState>) { 
+  function setPlayerState(state: Partial<IPlayerState>) {
     playerState.value = {
       ...playerState.value,
-      ...state
+      ...state,
     };
   }
 
   /**
    * 切换播放模式
    */
-  function switchPlayMode() { 
+  function switchPlayMode() {
     if (playerState.value.playmode === PlayMode.random) {
       playerState.value.playmode = PlayMode.singleCircle;
-    } else { 
+    } else {
       playerState.value.playmode++;
     }
   }
@@ -96,6 +113,6 @@ const usePlayerStore = defineStore('player', () => {
     switchPlayMode,
     initPlayerStore,
   };
-})
+});
 
-export default usePlayerStore
+export default usePlayerStore;

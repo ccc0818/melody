@@ -7,6 +7,8 @@ import "@/styles/root.scss";
 import router from "./router";
 import pinia from '@/plugins/pinia'
 
+console.log('欢迎使用melody!');
+
 const app = createApp(App);
 // 注册pinia
 app.use(pinia);

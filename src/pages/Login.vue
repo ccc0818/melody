@@ -46,7 +46,6 @@ function loopCheck(key: string) {
       codeStateRef = CodeState.waitack;
     } else if (res.code === CodeState.access) {
       // 登录成功
-      console.log(res);
       clearInterval(timer);
       codeStateRef = CodeState.access;
 

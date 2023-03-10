@@ -9,7 +9,7 @@ import { IMusicDetail } from "@/store/music";
 
 const route = useRoute();
 const { musicStore } = useStore();
-const { search } = musicStore;
+const { search, addToPlayList } = musicStore;
 let offsetRef = $ref<number>(0);
 let songCount = $ref<number>(0);
 let songsListRef = $ref<any[]>([]);
@@ -82,6 +82,11 @@ async function playHandle(id: number) {
 function loadMoreHandle() {
   searchHandle(true);
 }
+
+function addToPlaylistHandle(music: Partial<IMusicDetail>) { 
+  addToPlayList([music])
+}
+
 </script>
 
 <template>
@@ -89,7 +94,8 @@ function loadMoreHandle() {
     <CMusicTable
       :songsList="musicListRef"
       :hasMore="hasMoreRef"
-      @dbclick="playHandle"
+      @play="playHandle"
+      @add="addToPlaylistHandle"
       @more="loadMoreHandle"
     />
   </div>

@@ -113,6 +113,7 @@ async function logoutHandle() {
     width: 100%;
     height: $header-height;
     border-bottom: 1px solid var(--info-500);
+    backdrop-filter: blur(20px);
     z-index: 99;
   }
 

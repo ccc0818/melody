@@ -54,39 +54,25 @@ function onShowHandle(pid: number) {
 
 // 播放歌单
 function onPlayHandle(pid: number) {
-  getPlaylistMusics(pid).then((res: any) => {
-    if (res.code === 200) {
-      const songs = res.songs.map((v: any) => {
-        return {
-          id: v.id,
-          musicName: v.name,
-          singers: v.ar.map((v: any) => v.name),
-          picUrl: v.al.picUrl,
-          fee: v.fee,
-          album: v.al.name,
-          pushTime: v.publishTime,
-        };
-      });
-
-      player.playAll(songs);
-    }
-  });
+  player.playAll(pid);
 }
 </script>
 
 <template>
-  <div class="collect-container">
-    <CAlbumCard
-      class="card"
-      v-for="(v, i) in playListRef"
-      :key="i"
-      :name="v.name"
-      :pic="v.pic"
-      :pid="v.pid"
-      @play="onPlayHandle"
-      @show="onShowHandle"
-    />
-  </div>
+  <KeepAlive>
+    <div class="collect-container">
+      <CAlbumCard
+        class="card"
+        v-for="(v, i) in playListRef"
+        :key="i"
+        :name="v.name"
+        :pic="v.pic"
+        :pid="v.pid"
+        @play="onPlayHandle"
+        @show="onShowHandle"
+      />
+    </div>
+  </KeepAlive>
 </template>
 
 <style scoped lang="scss">

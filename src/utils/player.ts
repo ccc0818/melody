@@ -1,3 +1,4 @@
+import { getPlaylistMusics } from "@/service";
 import useStore from "@/store";
 import useMusicStore, { IMusicDetail } from "@/store/music";
 
@@ -63,13 +64,13 @@ class Player {
         if (index !== undefined) {
           // 无需添加到播放列表 本身就在列表中
           setIndex(index);
-        } else { 
+        } else {
           // 需要添加到播放列表 未传入index
           const fidx = musicState.playList.findIndex((v: any) => v.id === id);
           if (fidx < 0) {
             const length = addToPlayList([res]);
             setIndex(length - 1);
-          } else { 
+          } else {
             setIndex(fidx);
           }
         }
@@ -83,10 +84,26 @@ class Player {
     }
   }
 
-  async playAll(musics: Partial<IMusicDetail>[]) {
+  async playAll(pid: number) {
+    const resList = await getPlaylistMusics(pid);
+    if (resList.code !== 200) {
+      return;
+    }
+
+    const musics = resList.songs.map((v: any) => {
+      return {
+        id: v.id,
+        musicName: v.name,
+        singers: v.ar.map((v: any) => v.name),
+        picUrl: v.al.picUrl,
+        fee: v.fee,
+        album: v.al.name,
+        pushTime: v.publishTime,
+      };
+    });
+
     const { musicStore } = useStore();
-    const { clearPlayList, setIndex, setMusicId, setPlayList } =
-      musicStore;
+    const { clearPlayList, setIndex, setMusicId, setPlayList } = musicStore;
     // 将歌单歌曲替换到播放列表
     clearPlayList();
     setPlayList(musics);

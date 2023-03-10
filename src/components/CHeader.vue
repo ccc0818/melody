@@ -183,7 +183,7 @@ function onplayHandle(i: number) {
   justify-content: center;
   // overflow: hidden;
   // font-size: 1em;
-  backdrop-filter: blur(20px);
+  // backdrop-filter: blur(20px);
   align-items: center;
   justify-items: center;
   z-index: 99;

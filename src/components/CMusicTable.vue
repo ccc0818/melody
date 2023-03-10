@@ -13,7 +13,8 @@ const props = withDefaults(defineProps<{
 
 const emits = defineEmits<{
   (e: 'more'): void
-  (e: 'dbclick', id: number): void
+  (e: 'play', id: number): void
+  (e: 'add', music: Partial<IMusicDetail>): void
 }>()
 
 function loadMoreHandle() {
@@ -27,7 +28,7 @@ function loadMoreHandle() {
   <div class="music-table" v-lazy-container="{selector: 'img'}">
     <ul class="ul">
       <!-- 左侧 -->
-      <li class="item" v-for="v in songsList" :key="v.id" @dblclick="emits('dbclick', v.id as number)">
+      <li class="item" v-for="v in songsList" :key="v.id" @dblclick="emits('play', v.id as number)">
         <div class="left">
           <img class="al" :data-src="v.picUrl" :src="AlbumImg">
           <div class="info">
@@ -41,9 +42,10 @@ function loadMoreHandle() {
           <p class="date">发布日期: {{ (new Date(v.pushTime as number).toLocaleDateString()) }}</p>
         </div>
 
-        <!-- right -->
-        <div class="right">
-          <span class="iconfont icon-24gf-play" @click="emits('dbclick', v.id as number)"></span>
+        <!-- option -->
+        <div class="option">
+          <span class="iconfont icon-24gf-play play" @click="emits('play', v.id as number)"></span>
+          <span class="iconfont icon-jia add" @click="emits('add', v)"></span>
         </div>
       </li>
     </ul>
@@ -68,10 +70,15 @@ function loadMoreHandle() {
     // grid-template-rows: 60px;
     cursor: pointer;
     user-select: none;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
       background-color: var(--info);
       border-radius: 8px;
+      .option {
+        transform: translateX(0);
+      }
     }
 
     .left {
@@ -115,20 +122,34 @@ function loadMoreHandle() {
       }
     }
 
-    .right {
+    .option {
+      position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
+      right: 0;
+      height: 100%;
+      transform: translateX(100%);
+      transition: .3s;
       
-      .iconfont {
-        font-size: 1.5em;
-        padding: 5px;
-        background-color: var(--info-a50);
-        border-radius: 8px;
-        color: var(--primary);
-        cursor: pointer;
+      .play, .add {
+        height: 100%;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6em;
         user-select: none;
+        cursor: pointer;
       }
+
+      .play {
+        background-color: var(--primary);
+      }
+      .add {
+        background-color: #3686ff;
+      }
+
     }
   }
 

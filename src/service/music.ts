@@ -88,3 +88,47 @@ export function getPlaylistDetail(pid: number) {
 export function getPlaylistMusics(pid: number) { 
   return axios.get(`/playlist/track/all?id=${pid}`) as any;
 }
+
+/**
+ * 获取推荐歌单
+ * @param limit 
+ * @returns 
+ */
+export function getRecommendPlaylist(limit: number = 10) { 
+  return axios.get(`/personalized?limit=${limit}`) as any;
+}
+
+/**
+ * 获取排行榜歌单
+ * @returns 
+ */
+export function getRankPlaylist() { 
+  return axios.get(`/toplist`) as any;
+}
+
+/**
+ * 获取歌单分类
+ * @returns 
+ */
+export function getPlaylistCategory() { 
+  return axios.get('/playlist/catlist') as any;
+}
+
+/**
+ * 获取歌单列表通过分类
+ * @param cat 
+ * @param offset 
+ * @param limit 
+ * @returns 
+ */
+export function getPlaylistByType(cat?: string, offset: number = 0, limit: number = 30) { 
+  return axios.get(`/top/playlist?${cat ? 'cat='+cat : ''}&offset=${offset}&limit=${limit}`) as any;
+}
+
+/**
+ * 获取最近播放歌曲
+ * @returns 
+ */
+export function getRecentPlaylist() { 
+  return axios.get('/record/recent/song') as any;
+}

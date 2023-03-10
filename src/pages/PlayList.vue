@@ -12,7 +12,7 @@ import useStore from "@/store";
 
 const route = useRoute();
 const { musicStore } = useStore();
-const { clearPlayList, addToPlayList } = musicStore;
+const { addToPlayList } = musicStore;
 const pid = Number(route.params.pid);
 
 interface IAlbum {
@@ -109,9 +109,14 @@ function onPlayMusic(id: number) {
   player.play(id);
 }
 
+// 添加到播放列表
+function onAddToPlaylist(music: Partial<IMusicDetail>) { 
+  addToPlayList([music])
+}
+
 // 播放全部
 function playAllHandle() {
-  player.playAll(songs);
+  player.playAll(pid);
 }
 </script>
 
@@ -155,7 +160,8 @@ function playAllHandle() {
     <div class="list">
       <CMusicTable
         :songs-list="songsListRef"
-        @dbclick="onPlayMusic"
+        @play="onPlayMusic"
+        @add="onAddToPlaylist"
         :hasMore="false"
       />
     </div>

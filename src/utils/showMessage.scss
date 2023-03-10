@@ -7,9 +7,9 @@
   min-width: 150px;
   min-height: 60px;
   border-radius: 8px;
-  box-shadow: 0 0 15px #ccc;
-  // color: #fff;
-  padding: 8px;
+  box-shadow: 0 0 15px var(--info);
+  color: var(--color);
+  padding: 8px 20px;
   text-align: center;
   overflow: hidden;
   display: flex;

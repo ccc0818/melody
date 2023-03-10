@@ -26,6 +26,19 @@ const routes = [
     component: () => import("@/pages/PlayList.vue"),
   },
   {
+    name: "recent",
+    path: "/recent",
+    component: () => import("@/pages/RecentPlay.vue"),
+    meta: {
+      needLogin: true,
+    },
+  },
+  {
+    name: "playcategory",
+    path: "/playcategory",
+    component: () => import("@/pages/PlaylistCategory.vue"),
+  },
+  {
     name: "login",
     path: "/login",
     component: () => import("@/pages/Login.vue"),

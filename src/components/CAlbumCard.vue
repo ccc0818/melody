@@ -29,14 +29,20 @@ const emits = defineEmits<{
   position: relative;
   cursor: pointer;
   transition: 0.3s;
+  width: 100%;
+  overflow: hidden;
 
   .img {
     position: relative;
     aspect-ratio: 1/1;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
 
     &:hover {
       .pic {
         box-shadow: 0 0 20px var(--info);
+        transform: scale(1.2);
       }
 
       .play {
@@ -69,6 +75,7 @@ const emits = defineEmits<{
       color: var(--primary);
       text-align: center;
       display: none;
+      backdrop-filter: blur(20px);
     }
   }
 

@@ -7,6 +7,7 @@ import {
 } from "@/service/music";
 import usePlayerStore, { PlayMode } from "./player";
 import { getRandom } from "@/utils/getRandom";
+import { showMessage } from "@/utils";
 
 export enum Fee {
   free = 0, // 免费或者无版权
@@ -78,20 +79,29 @@ const useMusicStore = defineStore("music", () => {
   }
 
   function addToPlayList(musics: Partial<IMusicDetail>[]) {
-    musics.forEach(v => { 
+    musics.forEach(v => {
       musicState.value.playList.push(v);
-    })
+    });
+
+    showMessage({
+      type: "success",
+      message: `${musics.length}首歌已添加到播放列表`,
+    });
 
     return musicState.value.playList.length;
   }
 
-  function delFromPlayList(index: number) { 
+  function delFromPlayList(index: number) {
     musicState.value.playList.splice(index, 1);
-  } 
+  }
 
   function setPlayList(musics: Partial<IMusicDetail>[]) {
     musicState.value.playList = musics;
-  }; 
+    showMessage({
+      type: "success",
+      message: `播放列表已更新为当前歌单`,
+    });
+  }
 
   function clearPlayList() {
     musicState.value.playList.length = 0;
@@ -113,7 +123,7 @@ const useMusicStore = defineStore("music", () => {
       let newIdx = musicState.value.index + 1;
       if (newIdx >= musicState.value.playList.length) {
         newIdx = 0;
-      } 
+      }
       setIndex(newIdx);
       return musicState.value.playList[newIdx].id;
     }
@@ -122,7 +132,7 @@ const useMusicStore = defineStore("music", () => {
       let newIdx = musicState.value.index - 1;
       if (newIdx < 0) {
         newIdx = musicState.value.playList.length - 1;
-      } 
+      }
       setIndex(newIdx);
       return musicState.value.playList[newIdx].id;
     }

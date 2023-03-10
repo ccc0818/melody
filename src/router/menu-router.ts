@@ -1,14 +1,20 @@
 export default [
   {
-    name: '发现音乐',
+    name: "发现音乐",
     to: {
-      name: 'home'
-    }
+      name: "home",
+    },
   },
   {
-    name: '我的歌单',
+    name: "我的歌单",
     to: {
-      name: 'collection'
-    }
-  }
-]
+      name: "collection",
+    },
+  },
+  {
+    name: "最近播放",
+    to: {
+      name: "recent",
+    },
+  },
+];

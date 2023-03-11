@@ -4,6 +4,12 @@ import PostcssPresetEnv from 'postcss-preset-env'
 import path from 'path'
 import AutoImport from "unplugin-auto-import/vite"
 
+let baseURL: string | undefined;
+if (process.env.NODE_ENV === 'development') { 
+  baseURL = 'http://localhost:3000';
+}
+ 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -42,4 +48,9 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    "process.env": {
+      baseURL
+    }
+  }
 });

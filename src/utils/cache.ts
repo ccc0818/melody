@@ -14,8 +14,6 @@ export function saveCache() {
   const { playerStore } = useStore();
   const { playerState } = playerStore;
 
-  console.log(String(playerState.volume));
-
   const cache: ICache = {
     volume: playerState.volume,
     playmode: playerState.playmode,

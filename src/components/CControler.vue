@@ -82,6 +82,7 @@ watch(() => props.muted, n => {
         :max="1"
         v-model="volumeRef"
         @drag="v => emits('volumeChange', v)"
+        @change="v => emits('volumeChange', v)"
       />
     </div>
     <span class="iconfont icon-liebiao" :class="showPlayList ? 'open' : ''" @click.stop="emits('onplaylist')"></span>

@@ -2,7 +2,7 @@ import { PlayMode } from "@/store/player";
 import useStore from "@/store";
 import player from "./player";
 
-const cacheSymbol = Symbol.for('cache').toString()
+const cacheSymbol = Symbol.for("cache").toString();
 
 interface ICache {
   volume: number;
@@ -10,44 +10,44 @@ interface ICache {
   playmode: PlayMode;
 }
 
-export function saveCache() { 
-  const { playerStore } = useStore()
-  const { playerState } = playerStore
+export function saveCache() {
+  const { playerStore } = useStore();
+  const { playerState } = playerStore;
+
+  console.log(String(playerState.volume));
 
   const cache: ICache = {
     volume: playerState.volume,
     playmode: playerState.playmode,
-    muted: playerState.muted
-  }
+    muted: playerState.muted,
+  };
 
   localStorage.setItem(cacheSymbol, JSON.stringify(cache));
 }
 
 function isCache(obj: object): obj is ICache {
-    return !!(obj as ICache).volume
+  return !!(obj as ICache).volume;
 }
 
-export function restoreCache() { 
+export function restoreCache() {
   const { playerStore } = useStore();
   const { setPlayerState } = playerStore;
 
   const json = localStorage.getItem(cacheSymbol);
-  if (!json) { 
+  if (!json) {
     return;
   }
   const cache = JSON.parse(json);
   if (isCache(cache)) {
-    player.volume = cache.volume
-    player.muted = cache.muted
+    player.volume = cache.volume;
+    player.muted = cache.muted;
     setPlayerState({
-      playmode: cache.playmode
-    })
-  } else { 
+      playmode: cache.playmode,
+    });
+  } else {
     localStorage.removeItem(cacheSymbol);
   }
-
 }
-
 
 /**
  * 保存播放器状态 在关闭网页时

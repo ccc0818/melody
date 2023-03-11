@@ -63,7 +63,7 @@ const usePlayerStore = defineStore("player", () => {
     });
 
     // 注册音量变化事件
-    player.audio.addEventListener("volumechange", () => {
+    player.audio.addEventListener("volumechange", () => { 
       setPlayerState({
         volume: player.audio.volume,
       });

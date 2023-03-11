@@ -9,7 +9,7 @@ declare global {
 }
 
 const instance = axios.create({
-  baseURL: window.process.env.baseURL,
+  baseURL: window.process?.env?.baseURL,
   withCredentials: true,
 });
 

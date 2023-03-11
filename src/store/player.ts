@@ -78,8 +78,10 @@ const usePlayerStore = defineStore("player", () => {
         const musicStore = useMusicStore();
         const { switchMusic } = musicStore;
         switchMusic().then(res => {
-          player.audio.src = res.url;
-          player.play();
+          if (res) {
+            player.audio.src = res.url;
+            player.play();
+          }
         });
       }
     });

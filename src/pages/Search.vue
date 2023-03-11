@@ -75,7 +75,7 @@ async function searchHandle(more: boolean = false) {
  * 播放选中的音乐
  * @param song
  */
-async function playHandle(id: number) {
+function playHandle(id: number) {
   player.play(id);
 }
 

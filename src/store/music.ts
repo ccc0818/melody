@@ -59,22 +59,36 @@ const useMusicStore = defineStore("music", () => {
   }
 
   async function setMusicId(id: number) {
-    const music = (await getSongV1(id)) as any;
-    const detail = (await getMusicDetail([id])) as any;
-    const lyric = (await getLyric(id)) as any;
-    const song = detail.songs[0];
+    const musicReq = getSongV1(id);
+    const detailReq = getMusicDetail([id]);
+    const lyricReq = getLyric(id);
 
-    const musicDetail = {
-      id,
-      musicName: song.name,
-      singers: song.ar.map((v: any) => v.name),
-      fee: song.fee,
-      picUrl: song.al.picUrl,
-      url: music.data[0].url,
-      lyric: lyric.lrc.lyric,
-    };
-    setMusicDetail(musicDetail);
+    let musicDetail;
+    const [music, detail, lyric]: any[] = await Promise.all([
+      musicReq,
+      detailReq,
+      lyricReq,
+    ]);
+    
+    if (
+      music.code === detail.code &&
+      music.code === lyric.code &&
+      music.code === 200
+    ) {
+      const song = detail.songs[0];
 
+      musicDetail = {
+        id,
+        musicName: song.name,
+        singers: song.ar.map((v: any) => v.name),
+        fee: song.fee,
+        picUrl: song.al.picUrl,
+        url: music.data[0].url,
+        lyric: lyric.lrc.lyric,
+      };
+      setMusicDetail(musicDetail);
+    }
+  
     return musicDetail;
   }
 

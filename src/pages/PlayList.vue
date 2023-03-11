@@ -66,27 +66,26 @@ function filter(key: string) {
 }
 
 // 加载歌单列表
-onBeforeMount(async () => {
+onBeforeMount(() => {
   // 获取歌单详情
-  const detail = await getPlaylistDetail(pid);
+  Promise.all([getPlaylistDetail(pid), getPlaylistMusics(pid)]).then(
+    ([detail, list]: any[]) => {
+      if (detail.code === 200 && list.code === 200) {
+        // 设置歌单信息
+        album.count = detail.playlist.trackCount;
+        album.playTimes = detail.playlist.playCount;
+        album.name = detail.playlist.name;
+        album.pic = detail.playlist.coverImgUrl;
+        album.createDate = new Date(
+          detail.playlist.createTime
+        ).toLocaleDateString();
+        album.creator = {
+          nickname: detail.playlist.creator.nickname,
+          avatar: detail.playlist.creator.avatarUrl,
+        };
 
-  if (detail.code === 200) {
-    // 设置歌单信息
-    album.count = detail.playlist.trackCount;
-    album.playTimes = detail.playlist.playCount;
-    album.name = detail.playlist.name;
-    album.pic = detail.playlist.coverImgUrl;
-    album.createDate = new Date(
-      detail.playlist.createTime
-    ).toLocaleDateString();
-    album.creator = {
-      nickname: detail.playlist.creator.nickname,
-      avatar: detail.playlist.creator.avatarUrl,
-    };
-
-    getPlaylistMusics(pid).then((res: any) => {
-      if (res.code === 200) {
-        songs = res.songs.map((v: any) => {
+        // 加载列表
+        songs = list.songs.map((v: any) => {
           return {
             id: v.id,
             musicName: v.name,
@@ -100,8 +99,8 @@ onBeforeMount(async () => {
 
         songsListRef = songs;
       }
-    });
-  }
+    }
+  )
 });
 
 // 播放歌曲
@@ -110,8 +109,8 @@ function onPlayMusic(id: number) {
 }
 
 // 添加到播放列表
-function onAddToPlaylist(music: Partial<IMusicDetail>) { 
-  addToPlayList([music])
+function onAddToPlaylist(music: Partial<IMusicDetail>) {
+  addToPlayList([music]);
 }
 
 // 播放全部

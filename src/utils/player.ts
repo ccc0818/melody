@@ -1,6 +1,6 @@
 import { getPlaylistMusics } from "@/service";
 import useStore from "@/store";
-import useMusicStore, { IMusicDetail } from "@/store/music";
+import useMusicStore from "@/store/music";
 
 /**
  * 播放器类
@@ -120,8 +120,10 @@ class Player {
     const musicStore = useMusicStore();
     const { switchMusic } = musicStore;
     switchMusic(next).then(res => {
-      this._audio.src = res.url;
-      this.play();
+      if (res) {
+        this._audio.src = res.url;
+        this.play();
+      }
     });
   }
 

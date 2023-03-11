@@ -27,11 +27,14 @@ onBeforeMount(async () => {
   }
 });
 
+function playHandle(id: number) {
+  player.play(id);
+}
 </script>
 
 <template>
   <div class="recent-container">
-    <CMusicTable :songs-list="musicListRef" :has-more="false" @play="player.play" @add="(music) => addToPlayList([music])"/>
+    <CMusicTable :songs-list="musicListRef" :has-more="false" @play="playHandle" @add="(music) => addToPlayList([music])"/>
   </div>
 </template>
 

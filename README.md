@@ -1,5 +1,6 @@
-# Melody 
+# [Melody](http://47.94.89.56)  
 ### a simple music player base on netease api.
+
 
 ## thanks!
 

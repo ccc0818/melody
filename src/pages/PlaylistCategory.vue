@@ -190,7 +190,6 @@ function updatePage(page: number) {
 
         .name {
           font-size: 1.2em;
-          color: #fff;
           margin-right: 20px;
           flex-shrink: 0;
           padding: 5px 10px;

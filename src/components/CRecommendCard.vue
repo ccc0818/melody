@@ -25,7 +25,9 @@ function playHandle(pid: number) {
 
 <template>
   <div class="recommend-container">
-    <span class="title" :class="more ? 'more' : ''" @click="emits('more')">{{ title }}</span>
+    <span class="title" :class="more ? 'more' : ''" @click="emits('more')">{{
+      title
+    }}</span>
     <div class="list">
       <CAlbumCard
         class="card"
@@ -53,12 +55,14 @@ function playHandle(pid: number) {
     user-select: none;
     width: fit-content;
     margin: 20px 0;
+    padding: 10px 20px;
+    border-radius: 8px; 
+    border: 2px solid transparent;
 
     &.more {
       &:hover {
         cursor: pointer;
-        text-decoration: underline;
-        color: #fff;
+        border-color: var(--primary);
       }
     }
   }

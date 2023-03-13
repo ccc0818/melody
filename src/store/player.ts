@@ -35,16 +35,16 @@ const usePlayerStore = defineStore("player", () => {
     });
 
     // 注册空格按键
-    document.addEventListener('keyup', (e: KeyboardEvent) => { 
-      if (e.key === " ") { 
-        // 按下了空格键
-        if (playerState.value.play) {
-          player.pause();
-        } else {
-          player.play();
-        } 
-      }
-    })
+    // document.addEventListener('keyup', (e: KeyboardEvent) => { 
+    //   if (e.key === " ") { 
+    //     // 按下了空格键
+    //     if (playerState.value.play) {
+    //       player.pause();
+    //     } else {
+    //       player.play();
+    //     } 
+    //   }
+    // })
 
     // 注册播放事件
     player.audio.addEventListener("playing", () => {
